@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <table name="game">
+        <column>id</column>
+        <column>name</column>
+        <column>description</column>
+        <row>
+            <value description="id">-1</value>
+            <value description="name">name1</value>
+            <value description="description">desc1</value>
+        </row>
+        <row>
+            <value description="id">-2</value>
+            <value description="name">name2</value>
+            <value description="description">desc2</value>
+        </row>
+        <row>
+            <value description="id">-3</value>
+            <value description="name">name3</value>
+            <value description="description">desc3</value>
+        </row>
+    </table>
+</dataset>

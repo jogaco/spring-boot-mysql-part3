@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/games")
 public class GameRestController {
     
     private final GameRepository gameRepository;
@@ -18,7 +17,7 @@ public class GameRestController {
         this.gameRepository = gameRepository;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value="/games", method = RequestMethod.GET)
     Iterable<Game> index() {
         return this.gameRepository.findAll();
     }

@@ -211,19 +211,6 @@
                     <changeLogFile>target/classes/db/db.changelog.xml</changeLogFile>
                 </configuration>
                 <executions>
-                    <!-- drop db before generating schema with hbm2ddl to avoid any 
-                    inconsistencies between changelog files and DATABASECHANGELOG table -->
-                    <execution>
-                        <id>drop-db</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>dropAll</goal>
-                        </goals>
-                        <configuration>
-                            <propertyFile>target/classes/liquibase.properties</propertyFile>
-                            <changeLogFile>target/classes/db/db.changelog.xml</changeLogFile>
-                        </configuration>
-                    </execution>
                     <!-- mark db up-to-date in the  DATABASECHANGELOG table after generating 
                     schema with hbm2ddl so that no migration is executed -->
                     <execution>

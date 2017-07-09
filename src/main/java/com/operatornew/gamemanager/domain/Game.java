@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "game")
@@ -17,6 +18,9 @@ public class Game {
     private String name;
 
     private String description;
+    
+    @Version
+    private Integer version;
 
     public Game() {
     }
@@ -48,5 +52,13 @@ public class Game {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

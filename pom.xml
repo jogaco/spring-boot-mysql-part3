@@ -15,7 +15,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>1.5.3.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <dependencies>
@@ -27,11 +27,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -101,8 +105,48 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+                <configuration>
+                    <skip>${skipTests}</skip>
+                    <propertyFile>target/classes/liquibase.properties</propertyFile>
+                    <changeLogFile>target/classes/db/db.changelog.xml</changeLogFile>
+                </configuration>
+                <executions>
+                    <!-- drop db before generating schema with hbm2ddl to avoid any 
+                    inconsistencies between changelog files and DATABASECHANGELOG table -->
+                    <execution>
+                        <id>drop-db</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>dropAll</goal>
+                        </goals>
+                        <configuration>
+                            <propertyFile>target/classes/liquibase.properties</propertyFile>
+                            <changeLogFile>target/classes/db/db.changelog.xml</changeLogFile>
+                        </configuration>
+                    </execution>
+                    <!-- mark db up-to-date in the  DATABASECHANGELOG table after generating 
+                    schema with hbm2ddl so that no migration is executed -->
+                    <execution>
+                        <id>mark-db-up-to-date</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>changelogSync</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <testResources>
             <testResource>
                 <directory>src/test/resources</directory>
@@ -125,6 +169,7 @@
         <jdbc.artifactId>mysql-connector-java</jdbc.artifactId>
         <jdbc.version>5.1.35</jdbc.version>
         <hibernate.dialect>org.hibernate.dialect.MySQL5InnoDBDialect</hibernate.dialect>
+        <liquibase.version>3.5.3</liquibase.version>
     </properties>
 
 </project>

@@ -47,9 +47,6 @@
     <profiles>
         <profile>
             <id>db-diff</id>
-            <properties>
-                <skipDropDb>true</skipDropDb>
-            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -156,7 +153,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <force>true</force>
                     <skip>${skipTests}</skip>
                 </configuration>
                 <dependencies>

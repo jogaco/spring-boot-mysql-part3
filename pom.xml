@@ -85,6 +85,38 @@
                 </plugins>
             </build>
         </profile>
+        <!-- ========================================================================================================== -->
+        <!-- Test db migration by dropping database, skipping hbm2ddl and dbunit, so that all the db migrations are run -->
+        <!-- ========================================================================================================== -->
+        <profile>
+            <id>db-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${liquibase.version}</version>
+                        <executions>
+                            <execution>
+                                <id>drop-db</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>dropAll</goal>
+                                </goals>
+                                <configuration>
+                                    <propertyFile>target/classes/liquibase.properties</propertyFile>
+                                    <skip>false</skip>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <properties>
+                <!-- avoid generating db schema + inserting db-unit -->
+                <skipTests>true</skipTests>
+            </properties>
+        </profile>
     </profiles>
 
     <build>
@@ -125,6 +157,7 @@
                 </executions>
                 <configuration>
                     <force>true</force>
+                    <skip>${skipTests}</skip>
                 </configuration>
                 <dependencies>
                     <dependency>
